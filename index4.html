@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на свадьбу Алмаз & Эвелина</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin:0;
+            font-family: 'Playfair Display', serif;
+            background-color: #F5F0FA;
+            color: #3D2C56;
+        }
+        header {
+            text-align:center;
+            padding:50px 20px;
+            background-color:#BFA2DB;
+            color:white;
+        }
+        header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size:4em;
+            margin:0;
+        }
+        header p {
+            font-size:1.2em;
+        }
+        section {
+            max-width:800px;
+            margin:50px auto;
+            padding:20px;
+            background:white;
+            border-radius:15px;
+            box-shadow:0 0 20px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color:#BFA2DB;
+            margin-top:0;
+        }
+        .calendar {
+            font-size:1.5em;
+            text-align:center;
+            margin:20px 0;
+            font-weight:bold;
+        }
+        .buttons a {
+            display:inline-block;
+            background-color:#BFA2DB;
+            color:white;
+            text-decoration:none;
+            padding:10px 20px;
+            border-radius:10px;
+            margin:5px 5px;
+        }
+        form input, form select {
+            width:100%;
+            padding:10px;
+            margin:5px 0 15px 0;
+            border:1px solid #ccc;
+            border-radius:8px;
+        }
+        form button {
+            background-color:#BFA2DB;
+            color:white;
+            border:none;
+            padding:15px 30px;
+            border-radius:10px;
+            font-size:1.1em;
+            cursor:pointer;
+        }
+        #countdown {
+            font-size:2em;
+            text-align:center;
+            margin-top:30px;
+            color:#BFA2DB;
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Алмаз & Эвелина</h1>
+    <p>Мы будем счастливы разделить с Вами радость неповторимого для нас дня – дня нашей свадьбы!</p>
+</header>
+
+<section>
+    <h2>Дата и место</h2>
+    <div class="calendar">20.06.2026</div>
+    <p>Трогательная церемония и последующий уютный вечер будут проходить в 17:00 в ресторане «Орловский дворец» зал «Милли» по адресу: ул. Орловская, 209</p>
+    <ul>
+        <li>16:30 сбор гостей</li>
+        <li>17:00 церемония</li>
+        <li>17:30 банкет</li>
+        <li>23:00 завершение вечера</li>
+    </ul>
+    <p>Дресс-код: ограничений нет, но будем рады спокойным и нейтральным тонам.</p>
+</section>
+
+<section>
+    <h2>Пожелания</h2>
+    <p>Лучший для нас подарок – это Ваша денежная инвестиция в нашу молодую семью. Просим не обременять себя выбором цветов, Ваше присутствие скрасит этот день ярче любых букетов!</p>
+</section>
+
+<section>
+    <h2>Детали</h2>
+    <div class="buttons">
+        <a href="https://t.me/+X-Jl4iGmk3BjMzli" target="_blank">Telegram-чат</a>
+        <a href="https://wa.me/79963364662" target="_blank">Свадебный организатор</a>
+    </div>
+    <p>Не волнуйтесь о том, как добраться! Всех желающих будет ожидать автобус (время и место сбора сообщим дополнительно).</p>
+</section>
+
+<section>
+    <h2>Анкета</h2>
+    <form id="guest-form">
+        <input name="name" placeholder="Имя" required>
+        <input name="surname" placeholder="Фамилия" required>
+        <input name="family" placeholder="Если будете с семьей, укажите все имена">
+        <select name="drink">
+            <option>Вино</option>
+            <option>Шампанское</option>
+            <option>Виски</option>
+            <option>Водка</option>
+            <option>Пиво</option>
+            <option>Свой вариант</option>
+        </select>
+        <input type="number" name="transfer" placeholder="Нужен ли трансфер? Укажите число мест">
+        <button type="submit">Отправить</button>
+    </form>
+</section>
+
+<section>
+    <div id="countdown"></div>
+</section>
+
+<script>
+    // ====== Форма с отправкой в Cloudflare Worker ======
+    const workerURL = 'https://lingering-grass-3d26.bykroim2.workers.dev/'; // замени на свой Worker
+    const form = document.getElementById('guest-form');
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const data = {
+            name: form.name.value,
+            surname: form.surname.value,
+            family: form.family.value,
+            drink: form.drink.value,
+            transfer: form.transfer.value
+        };
+        try {
+            // Отправка без ожидания ответа от Telegram
+            await fetch(workerURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            alert('Данные отправлены! Спасибо!');
+            form.reset();
+        } catch (err) {
+            alert('Ошибка отправки');
+        }
+    });
+
+    // ====== Обратный отсчет до свадьбы ======
+    const countdownEl = document.getElementById('countdown');
+    const weddingDate = new Date('2026-06-20T17:00:00');
+
+    function updateCountdown() {
+        const now = new Date();
+        const diff = weddingDate - now;
+        if(diff < 0) countdownEl.innerHTML = "Сегодня свадьба!";
+        else {
+            const days = Math.floor(diff/1000/60/60/24);
+            const hours = Math.floor(diff/1000/60/60%24);
+            const mins = Math.floor(diff/1000/60%60);
+            const secs = Math.floor(diff/1000%60);
+            countdownEl.innerHTML = `${days}д ${hours}ч ${mins}м ${secs}с до свадьбы`;
+        }
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>
+
+</body>
+</html>
