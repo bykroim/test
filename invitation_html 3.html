@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Приглашение — Алмаз & Эвелина</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #fafafa;
+      color: #333;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 0.2em;
+    }
+    p { text-align: center; line-height: 1.4; }
+    .calendar {
+      display: flex; justify-content: center; align-items: center; margin: 20px 0;
+    }
+    .calendar .day { font-size: 3em; margin-right: 10px; }
+    .calendar .month-year { font-size: 1.5em; }
+    .details, .wishes {
+      margin: 20px 0; padding: 15px; background-color: #fff;
+      border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .buttons { text-align: center; margin: 20px 0; }
+    .buttons a {
+      display: inline-block; padding: 10px 20px; margin: 0 10px;
+      text-decoration: none; color: white; background-color: #6c5ce7;
+      border-radius: 5px;
+    }
+    .rsvp-form {
+      margin-top: 30px; background: #fff; padding: 20px;
+      border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .rsvp-form label { display: block; margin: 10px 0 5px; }
+    .rsvp-form input[type="text"], .rsvp-form select {
+      width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;
+    }
+    .rsvp-form button {
+      margin-top: 15px; padding: 10px 20px; background-color: #0984e3;
+      color: white; border: none; border-radius: 4px; cursor: pointer;
+    }
+    .countdown { text-align: center; margin-top: 20px; font-size: 1.2em; }
+  </style>
+</head>
+<body>
+
+  <h1>Алмаз & Эвелина</h1>
+  <p>Мы будем счастливы разделить с Вами радость нашего свадебного дня!</p>
+
+  <div class="calendar">
+    <div class="day">20</div>
+    <div class="month-year">июня<br>2026</div>
+  </div>
+
+  <div class="details">
+    <p><strong>Где и когда:</strong><br>
+      17:00, ресторан «Орловский дворец», зал «Милли», ул. Орловская, 209<br>
+      Сбор гостей — 16:30, церемония — 17:00, банкет — 17:30, завершение — 23:00.</p>
+  </div>
+
+  <div class="wishes">
+    <p><strong>Дресс‑код:</strong> спокойные и нейтральные тона.<br>
+    <strong>Пожелания:</strong> лучший подарок — денежная инвестиция. Пожалуйста, не дарите цветы.</p>
+  </div>
+
+  <div class="buttons">
+    <a href="https://t.me/+X-Jl4iGmk3BjMzli">Вступить в чат</a>
+    <a href="https://wa.me/79963364662">Связаться с организатором</a>
+  </div>
+
+  <form class="rsvp-form" id="rsvp-form">
+    <h2>Анкета</h2>
+    <label>Имя, Фамилия</label>
+    <input type="text" name="fullname" />
+
+    <label>Если с семьей — все имена</label>
+    <input type="text" name="family" />
+
+    <label>Предпочтения в алкоголе</label>
+    <select name="alcohol">
+      <option>Вино</option><option>Шампанское</option>
+      <option>Виски</option><option>Водка</option>
+      <option>Пиво</option><option>Свой вариант</option>
+    </select>
+
+    <label>Нужен трансфер? Кол-во мест:</label>
+    <input type="text" name="transfer" />
+
+    <button type="submit">Отправить</button>
+  </form>
+
+  <div class="countdown">
+    <div><span id="days"></span> дней</div>
+    <div><span id="hours"></span> часов</div>
+    <div><span id="minutes"></span> минут</div>
+    <div><span id="seconds"></span> секунд</div>
+  </div>
+
+  <script>
+    const weddingDate = new Date("2026-06-20T17:00:00");
+    function updateCountdown() {
+      const now = new Date();
+      const diff = weddingDate - now;
+      if (diff <= 0) return;
+      document.getElementById('days').textContent = Math.floor(diff / 86400000);
+      document.getElementById('hours').textContent = Math.floor((diff / 3600000) % 24);
+      document.getElementById('minutes').textContent = Math.floor((diff / 60000) % 60);
+      document.getElementById('seconds').textContent = Math.floor((diff / 1000) % 60);
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+
+</body>
+</html>
